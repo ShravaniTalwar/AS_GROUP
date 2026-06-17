@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AS Group - Admin Portal</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-gradient: radial-gradient(circle at 50% 50%, #102a45 0%, #051329 100%);
+            --navy-dark: #0b1a30;
+            --navy-card-top: #0a1829; /* Slightly darker signature for Admin workspace */
+            --gold-primary: #dbaf37;
+        }
+
+        html, body {
+            background: #051329 !important;
+            background: var(--bg-gradient) !important;
+            font-family: 'Inter', sans-serif !important;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+
+        .page-wrapper {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px 40px 20px;
+            position: relative;
+        }
+
+        .back-home {
+            position: absolute;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--gold-primary) !important;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: opacity 0.2s ease;
+            z-index: 10;
+        }
+        .back-home:hover {
+            opacity: 0.8;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 480px;
+            background: #ffffff;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .login-header {
+            background-color: var(--navy-card-top);
+            padding: 45px 30px 35px 30px;
+            text-align: center;
+            color: #ffffff;
+        }
+
+        .login-logo-circle {
+            width: 95px;
+            height: 95px;
+            background-color: transparent;
+            border: 2px solid var(--gold-primary);
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 18px;
+            overflow: hidden;
+            padding: 2px;
+        }
+
+        .login-logo-circle img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .login-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            margin: 0;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .login-header p {
+            color: var(--gold-primary);
+            font-size: 0.85rem;
+            margin: 8px 0 0 0;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        .login-body {
+            padding: 45px 40px;
+        }
+
+        .form-label {
+            color: #4a5568;
+            font-weight: 500;
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+        }
+
+        .form-control {
+            background-color: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            padding: 14px 16px;
+            font-size: 1rem;
+            color: #1a202c;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.01);
+            transition: all 0.2s ease;
+        }
+
+        .form-control:focus {
+            background-color: #ffffff;
+            border-color: var(--navy-dark);
+            box-shadow: 0 0 0 3px rgba(11, 26, 48, 0.15);
+        }
+
+        .password-wrapper {
+            position: relative;
+        }
+
+        .password-toggle-icon {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #64748b;
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+
+        .auth-status-message {
+            font-size: 0.9rem;
+            border-radius: 10px;
+            padding: 12px 14px;
+            margin-bottom: 25px;
+            display: none;
+            line-height: 1.4;
+        }
+
+        .btn-submit-login {
+            width: 100%;
+            background-color: var(--navy-dark);
+            color: #ffffff;
+            border: none;
+            border-radius: 14px;
+            padding: 15px;
+            font-weight: 600;
+            font-size: 1.05rem;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            margin-top: 15px;
+            box-shadow: 0 4px 12px rgba(11, 26, 48, 0.2);
+        }
+
+        .btn-submit-login:hover {
+            background-color: #11243f;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 18px rgba(11, 26, 48, 0.3);
+        }
+
+        .register-text {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 0.95rem;
+            color: #4a5568;
+        }
+
+        .register-text a {
+            color: var(--navy-dark);
+            text-decoration: none;
+            font-weight: 700;
+        }
+        
+        .register-text a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="page-wrapper">
+        <a href="index.html" class="back-home">&larr; Back to Home</a>
+
+        <div class="login-container">
+            
+            <div class="login-header">
+                <div class="login-logo-circle">
+                    <img src="logo.jpeg" alt="AS Logo" onerror="this.src='https://via.placeholder.com/95x95/112d4e/dbaf37?text=AS'">
+                </div>
+                <h2>AS Group</h2>
+                <p>Admin Portal Workspace</p>
+            </div>
+
+            <div class="login-body">
+                
+                <div id="statusMessage" class="auth-status-message"></div>
+
+                <form id="adminForm" onsubmit="handleAdminAuth(event)">
+
+                    <div class="mb-4">
+                        <label for="emailInput" class="form-label">Admin Email Address</label>
+                        <input type="email" id="emailInput" class="form-control" placeholder="admin@asgroup.com" required>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="passwordInput" class="form-label">Admin Security Key</label>
+                        <div class="password-wrapper">
+                            <input type="password" id="passwordInput" class="form-control" placeholder="Enter admin password" required>
+                            <i class="bi bi-eye password-toggle-icon" id="passwordToggle" onclick="togglePasswordVisibility()"></i>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-submit-login" id="submitBtn">Authorize Admin</button>
+                </form>
+
+                <div class="register-text" id="toggleContext">
+                    Need new management access? <a href="#" onclick="toggleMode(event, 'register')">Register Admin</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentMode = 'login';
+
+        function toggleMode(event, mode) {
+            if (event) event.preventDefault();
+            currentMode = mode;
+            hideStatus();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const toggleContext = document.getElementById('toggleContext');
+
+            if (mode === 'register') {
+                submitBtn.innerText = "Register Admin Account";
+                toggleContext.innerHTML = `Already registered? <a href="#" onclick="toggleMode(event, 'login')">Sign In</a>`;
+            } else {
+                submitBtn.innerText = "Authorize Admin";
+                toggleContext.innerHTML = `Need new management access? <a href="#" onclick="toggleMode(event, 'register')">Register Admin</a>`;
+            }
+        }
+
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('passwordInput');
+            const toggleIcon = document.getElementById('passwordToggle');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('bi-eye');
+                toggleIcon.classList.add('bi-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('bi-eye-slash');
+                toggleIcon.classList.add('bi-eye');
+            }
+        }
+
+        function showStatus(message, isSuccess) {
+            const msgBox = document.getElementById('statusMessage');
+            msgBox.innerText = message;
+            msgBox.style.display = 'block';
+            if (isSuccess) {
+                msgBox.style.backgroundColor = '#d1e7dd';
+                msgBox.style.color = '#0f5132';
+                msgBox.style.border = '1px solid #badbcc';
+            } else {
+                msgBox.style.backgroundColor = '#fff3cd';
+                msgBox.style.color = '#664d03';
+                msgBox.style.border = '1px solid #ffecb5';
+            }
+        }
+
+        function hideStatus() {
+            document.getElementById('statusMessage').style.display = 'none';
+        }
+
+        function handleAdminAuth(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById('emailInput').value.trim();
+            const password = document.getElementById('passwordInput').value;
+            
+            // Keeps admin space strictly partitioned from normal user entries
+            const adminStorageKey = `as_group_admin_${email}`;
+
+            if (currentMode === 'register') {
+                if (localStorage.getItem(adminStorageKey)) {
+                    showStatus("This admin identity is already active.", false);
+                } else {
+                    localStorage.setItem(adminStorageKey, password);
+                    showStatus("Admin account successfully provisioned! Switching to authentication view...", true);
+                    
+                    setTimeout(() => {
+                        document.getElementById('passwordInput').value = '';
+                        toggleMode(null, 'login');
+                    }, 1500);
+                }
+            } else {
+                const storedPassword = localStorage.getItem(adminStorageKey);
+                
+                if (!storedPassword) {
+                    showStatus("No admin privileges found matching this address.", false);
+                } else if (storedPassword === password) {
+                    showStatus("Admin authorization granted! Routing to console panel...", true);
+                    
+                    setTimeout(() => {
+                        window.location.href = "index.html"; 
+                    }, 1200);
+                } else {
+                    showStatus("Security verification failed. Invalid administrative key.", false);
+                }
+            }
+        }
+    </script>
+</body>
+</html>
