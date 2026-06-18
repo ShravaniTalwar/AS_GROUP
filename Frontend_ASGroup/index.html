@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AS Group - Premium Bananas</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-gradient: radial-gradient(circle at 50% 50%, #102a45 0%, #051329 100%);
+            --gold-primary: #dbaf37;
+            --text-light: #ffffff;
+        }
+
+        html, body {
+            background: #051329 !important;
+            background: var(--bg-gradient) !important;
+            color: #ffffff !important;
+            font-family: 'Inter', sans-serif !important;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* Continuous CSS Marquee Track Animation System */
+        .marquee-container {
+            background: rgba(255, 255, 255, 0.03);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 12px 0;
+            font-size: 0.95rem;
+            letter-spacing: 1px;
+            overflow: hidden;
+            white-space: nowrap;
+            display: flex;
+        }
+
+        .marquee-track {
+            display: inline-flex;
+            gap: 2rem;
+            animation: scrollTrack 25s linear infinite;
+        }
+
+        .marquee-track span.track-item {
+            display: inline-block;
+            flex-shrink: 0;
+        }
+
+        @keyframes scrollTrack {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .marquee-text-gold {
+            color: #dbaf37 !important;
+            font-weight: 600;
+        }
+
+        /* Navbar Layout Fixes */
+        .navbar-brand img {
+            max-height: 60px !important;
+            width: auto;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.8) !important;
+            font-weight: 400;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: #dbaf37 !important;
+        }
+
+        .btn-gold {
+            background-color: #dbaf37 !important;
+            color: #051329 !important;
+            font-weight: 600 !important;
+            border: none !important;
+            padding: 10px 24px !important;
+            border-radius: 8px !important;
+            transition: all 0.3s ease !important;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-gold:hover {
+            background-color: #f0c243 !important;
+            transform: translateY(-2px);
+        }
+
+        .btn-outline-white {
+            color: #ffffff !important;
+            border: 1px solid rgba(255, 255, 255, 0.3) !important;
+            padding: 10px 30px !important;
+            border-radius: 8px !important;
+            transition: all 0.3s ease !important;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-outline-white:hover {
+            background: rgba(255, 255, 255, 0.1) !important;
+            border-color: #ffffff !important;
+        }
+
+        /* Hero Layout Fixes */
+        .hero-section {
+            padding: 80px 0 60px 0 !important;
+        }
+
+        .hero-title {
+            font-family: 'Playfair Display', serif !important;
+            font-size: 3.8rem;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .hero-title span {
+            color: #dbaf37 !important;
+        }
+
+        .hero-desc {
+            color: rgba(255, 255, 255, 0.7) !important;
+            font-size: 1.1rem;
+            max-width: 720px;
+            margin: 25px auto;
+            line-height: 1.6;
+        }
+
+        /* Stat Squares Grid Fixes */
+        .stat-card {
+            background: rgba(255, 255, 255, 0.04) !important;
+            border: 1px solid rgba(255, 255, 255, 0.08) !important;
+            border-radius: 16px !important;
+            padding: 35px 20px !important;
+            backdrop-filter: blur(10px);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(219, 175, 55, 0.4) !important;
+        }
+
+        .stat-icon {
+            color: #dbaf37 !important;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            background: rgba(219, 175, 55, 0.1) !important;
+            width: 55px;
+            height: 55px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #dbaf37 !important;
+            margin-bottom: 6px;
+        }
+
+        .stat-label {
+            color: rgba(255, 255, 255, 0.65) !important;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Sections Styles */
+        .section-title {
+            font-family: 'Playfair Display', serif !important;
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+
+        .section-title span {
+            color: #dbaf37;
+        }
+
+        .sub-badge {
+            background: rgba(219, 175, 55, 0.1);
+            color: #dbaf37;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 6px 16px;
+            border-radius: 50px;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        /* About Section Image Wrapper */
+        .about-img-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .about-img-container img {
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            max-width: 100%;
+            height: auto;
+        }
+
+        .floating-badge {
+            position: absolute;
+            bottom: -15px;
+            left: -15px;
+            background: #dbaf37;
+            color: #051329;
+            padding: 20px;
+            border-radius: 16px;
+            font-family: 'Playfair Display', serif;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+
+        /* Services & Features Cards */
+        .custom-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 20px;
+            padding: 40px 30px;
+            height: 100%;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .custom-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(219, 175, 55, 0.3);
+            transform: translateY(-8px);
+        }
+
+        .card-icon-wrap {
+            font-size: 2.2rem;
+            color: #dbaf37;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+
+        .card-link {
+            color: #dbaf37;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: opacity 0.2s;
+        }
+
+        .card-link:hover {
+            opacity: 0.8;
+        }
+
+        /* Feature Row Item */
+        .feature-item {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+
+        .feature-icon-box {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #dbaf37;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        /* Testimonial Cards */
+        .testimonial-card {
+            background: #0b1e36;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 35px;
+            height: 100%;
+        }
+
+        .stars-wrap {
+            color: #dbaf37;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .client-meta h6 {
+            color: #ffffff;
+            margin-bottom: 2px;
+            font-weight: 600;
+        }
+
+        .client-meta span {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.85rem;
+        }
+
+        /* Contact Section */
+        .contact-info-list {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .contact-method-item {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .contact-icon-box {
+            background: rgba(255, 255, 255, 0.04);
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #dbaf37;
+            font-size: 1.4rem;
+        }
+
+        .contact-form-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 40px;
+            border-radius: 24px;
+            backdrop-filter: blur(10px);
+        }
+
+        .form-control-custom {
+            background: rgba(255, 255, 255, 0.04) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            color: #ffffff !important;
+            padding: 14px 18px !important;
+            border-radius: 10px !important;
+        }
+
+        .form-control-custom:focus {
+            border-color: #dbaf37 !important;
+            box-shadow: none !important;
+        }
+
+        .form-control-custom::placeholder {
+            color: rgba(255, 255, 255, 0.35);
+        }
+
+        /* Footer Custom */
+        footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            background: #030d1c;
+        }
+    </style>
+</head>
+<body id="home">
+
+    <div class="marquee-container w-100">
+        <div class="marquee-track">
+            <span class="track-item">Exporting Premium Quality Bananas Globally to &nbsp;•&nbsp; <span class="marquee-text-gold">Pune</span> &nbsp;•&nbsp; <span class="marquee-text-gold">Mumbai</span> &nbsp;•&nbsp; <span class="marquee-text-gold">Dubai</span> &nbsp;•&nbsp; <span class="marquee-text-gold">Iran</span> &nbsp;•&nbsp; and Beyond! Shipping fresh corporate orders daily.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <span class="track-item">Exporting Premium Quality Bananas Globally to &nbsp;•&nbsp; <span class="marquee-text-gold">Pune</span> &nbsp;•&nbsp; <span class="marquee-text-gold">Mumbai</span> &nbsp;•&nbsp; <span class="marquee-text-gold">Dubai</span> &nbsp;•&nbsp; <span class="marquee-text-gold">Iran</span> &nbsp;•&nbsp; and Beyond! Shipping fresh corporate orders daily.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        </div>
+    </div>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-transparent pt-3">
+        <div class="container">
+            <a class="navbar-brand" href="#home">
+                <img src="logo.jpeg" alt="AS Group Logo" onerror="this.src='https://via.placeholder.com/160x60/051329/dbaf37?text=AS+GROUP'">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mainNavbar">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center gap-3">
+                    <li class="nav-item"><a class="nav-link active" href="#home">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#why-us">Why Us</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                    <li class="nav-item ms-lg-2">
+                        <a class="btn btn-gold" href="login.html">Login</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero-section text-center">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <h1 class="hero-title text-white">
+                        Bringing the World's<br>
+                        <span>Best Bananas</span> to Your Table
+                    </h1>
+                    <p class="hero-desc">
+                        AS Group connects premium banana farms across South India to homes, hotels, and supermarkets worldwide. Farm-fresh, quality-certified, delivered with care.
+                    </p>
+                    <div class="d-flex justify-content-center gap-3 mt-4 flex-wrap">
+                        <a href="#services" class="btn btn-gold">Explore Our Services</a>
+                        <a href="login.html" class="btn btn-outline-white">Order Now &rarr;</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-sm-6 col-lg-3">
+                    <div class="stat-card text-center">
+                        <div class="stat-icon"><i class="bi bi-box-seam"></i></div>
+                        <div class="stat-number">2,500+</div>
+                        <div class="stat-label">Tonnes Delivered Monthly</div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-3">
+                    <div class="stat-card text-center">
+                        <div class="stat-icon"><i class="bi bi-globe-americas"></i></div>
+                        <div class="stat-number">18+</div>
+                        <div class="stat-label">Countries Served</div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-3">
+                    <div class="stat-card text-center">
+                        <div class="stat-icon"><i class="bi bi-people"></i></div>
+                        <div class="stat-number">500+</div>
+                        <div class="stat-label">Happy Clients</div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-3">
+                    <div class="stat-card text-center">
+                        <div class="stat-icon"><i class="bi bi-patch-check"></i></div>
+                        <div class="stat-number">99.2%</div>
+                        <div class="stat-label">Quality Pass Rate</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="py-5 my-5">
+        <div class="container">
+            <div class="row g-5 align-items-center">
+                <div class="col-lg-6">
+                    <span class="sub-badge">About AS Group</span>
+                    <h2 class="section-title text-white mb-4">Rooted in Tradition,<br><span>Growing for Tomorrow</span></h2>
+                    <p class="text-white-50 mb-3" style="font-size: 1.05rem; line-height: 1.7;">
+                        Founded in 1999 by Arjun Singh in Bangalore, AS Group started as a small banana trading business serving local markets. Over 25 years, we've grown into one of India's most trusted banana supply chain companies.
+                    </p>
+                    <p class="text-white-50 mb-4" style="font-size: 1.05rem; line-height: 1.7;">
+                        We work directly with 200+ certified farming families across Karnataka, Tamil Nadu, and Andhra Pradesh, ensuring fair prices for farmers and premium quality for our customers.
+                    </p>
+                    <div class="row g-3">
+                        <div class="col-6">
+                            <div class="p-3 border border-secondary rounded-3 bg-dark bg-opacity-25">
+                                <h5 class="text-warning mb-1">3</h5>
+                                <span class="text-white-50 small">Cold Storage Hubs</span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="p-3 border border-secondary rounded-3 bg-dark bg-opacity-25">
+                                <h5 class="text-warning mb-1">₹120Cr</h5>
+                                <span class="text-white-50 small">Annual Revenue</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 text-center">
+                    <div class="about-img-container mt-4 mt-lg-0">
+                        <img src="https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?auto=format&fit=crop&w=600&q=80" alt="Premium Bananas" onerror="this.src='https://via.placeholder.com/550x420/dbaf37/051329?text=Premium+Bananas+Supply'">
+                        <div class="floating-badge">
+                            <h3 class="fw-bold m-0">25+</h3>
+                            <small class="text-uppercase fw-semibold" style="font-size: 0.75rem; letter-spacing:1px;">Years of Excellence</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="services" class="py-5 my-5">
+        <div class="container">
+            <div class="text-center mb-5">
+                <span class="sub-badge">Our Services</span>
+                <h2 class="section-title text-white">Everything You Need in <span>Bananas</span></h2>
+                <p class="text-white-50 mx-auto mt-2" style="max-width: 600px;">Explore our comprehensive range of retail and operational supply options built for every commercial scale.</p>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-4">
+                    <div class="custom-card">
+                        <div class="card-icon-wrap"><i class="bi bi-flower1"></i></div>
+                        <h4 class="text-white mb-3">Fresh Banana Supply</h4>
+                        <p class="text-white-50 mb-4">Sourced daily from chosen partner plantations, our fresh bananas are sorted by maturity and handled delicately to guarantee maximum crisp retail shelf-life.</p>
+                        <div class="mt-auto border-top border-secondary pt-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="text-warning fw-bold">Premium G9 & Cavendish</span>
+                                <a href="#contact" class="card-link">Learn more &rarr;</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-4">
+                    <div class="custom-card">
+                        <div class="card-icon-wrap"><i class="bi bi-building"></i></div>
+                        <h4 class="text-white mb-3">Bulk Wholesale</h4>
+                        <p class="text-white-50 mb-4">Tailored programmatic fulfillment architectures for prominent supermarket conglomerates, hotels, and institutional entities demanding strict volume availability metrics.</p>
+                        <div class="mt-auto border-top border-secondary pt-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="text-warning fw-bold">Custom Contract Tonnage</span>
+                                <a href="#contact" class="card-link">Learn more &rarr;</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-4">
+                    <div class="custom-card">
+                        <div class="card-icon-wrap"><i class="bi bi-globe"></i></div>
+                        <h4 class="text-white mb-3">Export Services</h4>
+                        <p class="text-white-50 mb-4">International cold-chain transport networks offering thorough custom documentation verification alongside custom packaging solutions for overseas destination ports.</p>
+                        <div class="mt-auto border-top border-secondary pt-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="text-warning fw-bold">Global Port Distribution</span>
+                                <a href="#contact" class="card-link">Learn more &rarr;</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="custom-card">
+                        <div class="card-icon-wrap"><i class="bi bi-truck"></i></div>
+                        <h4 class="text-white mb-3">Local & Regional Distribution</h4>
+                        <p class="text-white-50 mb-4"><strong>Logistics Framework:</strong> Bananas are harvested, packed safely into 20 kg carets, and dispatched using nimble 2-ton to 6-ton transport vehicles.<br><strong>Target Channels:</strong> Reliable, high-volume supply contracts directly serving self-markets and reputed B2B buyers across Pune, Mumbai, and Kolhapur based strictly on your exact order requirements.</p>
+                        <div class="mt-auto border-top border-secondary pt-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="text-warning fw-bold">Carets (20kg)</span>
+                                <a href="#contact" class="card-link">Request Quote &rarr;</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="custom-card">
+                        <div class="card-icon-wrap"><i class="bi bi-boxes"></i></div>
+                        <h4 class="text-white mb-3">Domestic Wholesale Supply (Punja Cutting)</h4>
+                        <p class="text-white-50 mb-4"><strong>Logistics Framework:</strong> Tailored specifically for the distinct requirements of Northern Indian markets, bananas are expertly processed into clean Punjas (Hands) and transported via high-capacity 6-tyre or 10-tyre trucks.<br><strong>Target Channels:</strong> Bulk, routine shipments handling heavy tonnage for main agricultural trading hubs throughout Punjab, Haryana, and Delhi's Azadpur Mandi.</p>
+                        <div class="mt-auto border-top border-secondary pt-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="text-warning fw-bold">Punja (Hands) Cut</span>
+                                <a href="#contact" class="card-link">Request Rates &rarr;</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="custom-card">
+                        <div class="card-icon-wrap"><i class="bi bi-ship-amp"></i></div>
+                        <h4 class="text-white mb-3">Global Export Portals</h4>
+                        <p class="text-white-50 mb-4"><strong>Logistics Framework:</strong> Premium G9 selections are safely insulated within robust 13 kg export boxes, loaded into heavy-duty 20-ton refrigerated containers with integrated pre-cooling technology, and routed through JNPT, Mumbai.<br><strong>Target Channels:</strong> International trade distribution channels ensuring fresh arrival and full customs clearance capability for buyers in Dubai (UAE), Iran, and Iraq.</p>
+                        <div class="mt-auto border-top border-secondary pt-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="text-warning fw-bold">Export Boxes (13kg)</span>
+                                <a href="#contact" class="card-link">Book Container &rarr;</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="why-us" class="py-5 my-5">
+        <div class="container">
+            <div class="text-center mb-5">
+                <span class="sub-badge">Why Choose Us</span>
+                <h2 class="section-title text-white">The AS Group <span>Advantage</span></h2>
+            </div>
+            
+            <div class="row g-4 row-cols-1 row-cols-md-2 row-cols-lg-3">
+                <div class="col">
+                    <div class="feature-item p-2">
+                        <div class="feature-icon-box"><i class="bi bi-award"></i></div>
+                        <div>
+                            <h5 class="text-white mb-2">Strict Sourcing Control</h5>
+                            <p class="text-white-50 small">Our process starts right at the roots with rigorous quality assessments and direct farm selection in Solapur—the heart of premium G9 banana cultivation.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="feature-item p-2">
+                        <div class="feature-icon-box"><i class="bi bi-box-seam"></i></div>
+                        <div>
+                            <h5 class="text-white mb-2">Custom Packaging Architecture</h5>
+                            <p class="text-white-50 small">We pack explicitly for transit durability using 20kg carets, specialized northern hand cuts (Punja), or heavy-duty 13kg export boxes.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="feature-item p-2">
+                        <div class="feature-icon-box"><i class="bi bi-thermometer-snow"></i></div>
+                        <div>
+                            <h5 class="text-white mb-2">Pre-Cooling Infrastructure</h5>
+                            <p class="text-white-50 small">To prevent transit spoilage, long-haul configurations utilize heavy refrigerated fleets and 20-ton containers with built-in pre-cooling systems.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="feature-item p-2">
+                        <div class="feature-icon-box"><i class="bi bi-graph-up-arrow"></i></div>
+                        <div>
+                            <h5 class="text-white mb-2">Multi-Channel Scale</h5>
+                            <p class="text-white-50 small">We run direct active corridors serving local corporate clients, massive domestic wholesale mandis, and global port terminals simultaneously.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="feature-item p-2">
+                        <div class="feature-icon-box"><i class="bi bi-shield-check"></i></div>
+                        <div>
+                            <h5 class="text-white mb-2">Quality Certified Delivery</h5>
+                            <p class="text-white-50 small">Rigid tracking controls paired with robust handling standards to keep the natural ripening cycle perfectly paused until delivery.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="feature-item p-2">
+                        <div class="feature-icon-box"><i class="bi bi-clock"></i></div>
+                        <div>
+                            <h5 class="text-white mb-2">End-to-End Logistics</h5>
+                            <p class="text-white-50 small">From nimble 2-ton field pick-ups up to 20-ton global trade containers, our supply operations never leave the cold chain network.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-5 my-5 bg-black bg-opacity-20">
+        <div class="container">
+            <div class="text-center mb-5">
+                <span class="sub-badge">Testimonials</span>
+                <h2 class="section-title text-white">Trusted by <span>500+ Clients</span></h2>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="testimonial-card">
+                        <div class="stars-wrap">
+                            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                        </div>
+                        <p class="text-white-50 mb-4" style="font-size: 0.95rem; font-style: italic;">"AS Group has been our primary banana partner for over 7 years. Their consistent premium batch quality and shelf life metrics are completely unmatched in the industry."</p>
+                        <div class="client-meta border-top border-secondary pt-3">
+                            <h6>Suresh Menon</h6>
+                            <span>Big Bazaar Store Manager</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="testimonial-card">
+                        <div class="stars-wrap">
+                            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                        </div>
+                        <p class="text-white-50 mb-4" style="font-size: 0.95rem; font-style: italic;">"We source hundreds of banana crates weekly for our culinary setups through AS Group. Perfect delivery intervals, flawless tracking dashboard, and premium support every single time."</p>
+                        <div class="client-meta border-top border-secondary pt-3">
+                            <h6>Meera Iyer</h6>
+                            <span>Hotel Leela Executive Chef</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="testimonial-card">
+                        <div class="stars-wrap">
+                            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                        </div>
+                        <p class="text-white-50 mb-4" style="font-size: 0.95rem; font-style: italic;">"Easily the finest Indian agricultural exporter we have collaborated with. The cold chain ecosystem, robust custom clearance configurations, and packing quality are world-class."</p>
+                        <div class="client-meta border-top border-secondary pt-3">
+                            <h6>Abdul Karim</h6>
+                            <span>UAE Import Partner</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="py-5 my-5">
+        <div class="container">
+            <div class="row g-5">
+                <div class="col-lg-5">
+                    <span class="sub-badge">Contact Us</span>
+                    <h2 class="section-title text-white mb-4">Let's Talk <span>Business</span></h2>
+                    <p class="text-white-50 mb-5">Ready to source premium bananas? Get in touch with our dedicated commercial enterprise team for custom programmatic quotes, bulk configurations, or logistics distribution partnerships.</p>
+                    
+                    <div class="contact-info-list">
+                        <div class="contact-method-item">
+                            <div class="contact-icon-box"><i class="bi bi-telephone"></i></div>
+                            <div>
+                                <small class="text-white-50 d-block">Call Our Office</small>
+                                <span class="text-white fw-semibold">+91 80 4567 8900</span>
+                                <small class="text-white-50 d-block mt-1" style="font-size:0.75rem;">Mon—Sat, 8am—8pm IST</small>
+                            </div>
+                        </div>
+                        <div class="contact-method-item">
+                            <div class="contact-icon-box"><i class="bi bi-envelope"></i></div>
+                            <div>
+                                <small class="text-white-50 d-block">Email Procurement</small>
+                                <span class="text-warning fw-semibold">sales@asgroup.com</span>
+                                <small class="text-white-50 d-block mt-1" style="font-size:0.75rem;">Typical response within 2 hours</small>
+                            </div>
+                        </div>
+                        <div class="contact-method-item">
+                            <div class="contact-icon-box"><i class="bi bi-geo-alt"></i></div>
+                            <div>
+                                <small class="text-white-50 d-block">Headquarters Location</small>
+                                <span class="text-white">42 Hosur Road, Bangalore — 560068</span>
+                                <small class="text-white-50 d-block mt-1" style="font-size:0.75rem;">Karnataka, India</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-7">
+                    <div class="contact-form-card">
+                        <h4 class="text-white mb-4">Send us a Message</h4>
+                        <form action="#" method="POST" onsubmit="event.preventDefault(); alert('Message sent successfully!');">
+                            <div class="mb-3">
+                                <label class="form-label text-white-50 small">Full Name</label>
+                                <input type="text" class="form-control form-control-custom" placeholder="Your full name" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label text-white-50 small">Email Address</label>
+                                <input type="email" class="form-control form-control-custom" placeholder="your@email.com" required>
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label text-white-50 small">Message Requirements</label>
+                                <textarea class="form-control form-control-custom" rows="5" placeholder="Tell us about your volume or enterprise custom requirements..." required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-gold w-100 py-3">Send Message</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-4 mt-5">
+        <div class="container">
+            <div class="row align-items-center row-cols-1 row-cols-md-2">
+                <div class="col text-center text-md-start mb-3 mb-md-0">
+                    <span class="text-white fw-bold">AS Group</span> 
+                    <span class="text-white-50 small ms-2">Premium Banana Exports</span>
+                </div>
+                <div class="col text-center text-md-end">
+                    <p class="text-white-50 small m-0">&copy; 2026 AS Group. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

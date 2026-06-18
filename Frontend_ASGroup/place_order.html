@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AS Group - Place Order</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --sidebar-bg: #0b1e33;
+            --main-bg: #f8fafc;
+            --card-bg: #ffffff;
+            --gold-primary: #dbaf37;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --qty-bg: #f1f5f9;
+        }
+
+        /* Dark Mode Override Variables */
+        [data-bs-theme="dark"] {
+            --sidebar-bg: #030712;
+            --main-bg: #0f172a;
+            --card-bg: #1e293b;
+            --text-dark: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+            --qty-bg: #334155;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--main-bg);
+            color: var(--text-dark);
+            min-height: 100vh;
+            overflow-x: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Sidebar Navigation Layout */
+        .sidebar {
+            width: 260px;
+            background-color: var(--sidebar-bg);
+            min-height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 24px 0;
+            z-index: 1000;
+        }
+
+        .sidebar-brand-box {
+            padding: 0 24px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .sidebar-brand-box img {
+            max-height: 75px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .nav-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            flex-grow: 1;
+        }
+
+        .nav-item-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 24px;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .nav-item-link:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-item-link.active {
+            color: #051329;
+            background-color: var(--gold-primary);
+            font-weight: 600;
+            border-radius: 4px;
+        }
+
+        .sidebar-profile-box {
+            padding: 20px 24px 0 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .profile-name {
+            color: #ffffff;
+            font-weight: 600;
+            font-size: 0.95rem;
+           margin-bottom: 2px;
+        }
+
+        .profile-email {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.8rem;
+            word-break: break-all;
+        }
+
+        /* Main Content Viewport */
+        .main-content {
+            margin-left: 260px;
+            padding: 40px;
+        }
+
+        .header-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+           margin-bottom: 35px;
+        }
+
+        .welcome-msg h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .header-controls {
+            display: flex;
+            gap: 12px;
+           align-items: center;
+        }
+
+        .btn-header-action {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .btn-header-action:hover {
+            background: var(--qty-bg);
+            color: var(--text-dark);
+        }
+
+        /* Notification Active Dot indicator */
+        .notification-badge-dot {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            width: 10px;
+            height: 10px;
+            background-color: #ef4444;
+            border-radius: 50%;
+        }
+
+        /* Product Catalog Matrix */
+        .product-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+           overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: 100%;
+        }
+
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 20px -8px rgba(0, 0, 0, 0.15);
+        }
+
+        .product-img-frame {
+            background-color: var(--qty-bg);
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .product-img-frame i {
+            font-size: 4.5rem;
+        }
+
+        .badge-category {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            background: var(--main-bg);
+            color: var(--text-dark);
+           border: 1px solid var(--border-color);
+            font-weight: 600;
+            font-size: 0.75rem;
+            padding: 6px 12px;
+            border-radius: 20px;
+            text-transform: uppercase;
+        }
+
+        .product-body {
+            padding: 24px;
+        }
+
+        .product-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+
+        .product-desc {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 20px;
+            height: 42px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 20px;
+        }
+
+        .price-tag {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            }
+
+        .price-unit {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        .min-order {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* Quantity Counter UI Controls */
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            background: var(--qty-bg);
+            border-radius: 8px;
+            padding: 4px;
+            margin-bottom: 16px;
+            justify-content: space-between;
+        }
+
+        .btn-qty {
+            border: none;
+            background: var(--card-bg);
+            color: var(--text-dark);
+            width: 32px;
+            height: 32px;
+           border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .btn-qty:hover {
+            background: var(--border-color);
+        }
+
+        .qty-val {
+            font-weight: 600;
+            width: 40px;
+            text-align: center;
+            font-size: 0.95rem;
+            color: var(--text-dark);
+        }
+
+        .btn-add-cart {
+            width: 100%;
+            background-color: #0b1e33;
+            color: #ffffff;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: background-color 0.2s;
+        }
+
+        .btn-add-cart:hover {
+            background-color: #1e3a5f;
+        }
+
+        /* Toast notifications framework placement spacing specifications */
+        .toast-container {
+            z-index: 1060;
+        }
+
+        @media (max-width: 991.98px) {
+            .sidebar { transform: translateX(-100%); }
+            .main-content { margin-left: 0; padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="notification-toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header" style="background-color: #0b1e33; color: white;">
+                <i class="bi bi-bell-fill me-2"></i>
+                <strong class="me-auto">AS Group Notifications</strong>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body" id="toast-body-content" style="background: var(--card-bg); color: var(--text-dark);">
+                Welcome back! Ready to explore our fresh items catalog today?
+            </div>
+        </div>
+    </div>
+
+    <aside class="sidebar">
+        <div class="sidebar-brand-box">
+            <div class="d-inline-block p-1 bg-white rounded-circle mb-2" style="width: 85px; height: 85px; overflow: hidden; border: 2px solid var(--gold-primary);">
+                <img src="logo.jpeg" alt="AS Group Corporate Logo" class="w-100 h-100 rounded-circle" style="object-fit: cover;">
+            </div>
+            <h5 class="text-white m-0 small fw-bold" style="letter-spacing: 0.5px;">AS Group</h5>
+            <span class="d-block text-white-50 small mt-1" style="font-size: 0.75rem; letter-spacing: 1px; text-transform: uppercase;">User Portal</span>
+        </div>
+
+        <ul class="nav-menu">
+            <li>
+                <a href="place_order.html" class="nav-item-link active">
+                    <i class="bi bi-box-seam"></i> Place Order
+                </a>
+            </li>
+            <li>
+                <a href="cart.html" class="nav-item-link">
+                    <i class="bi bi-cart"></i> Cart (<span id="cart-counter">0</span>)
+                </a>
+            </li>
+            <li>
+                <a href="orders.html" class="nav-item-link">
+                    <i class="bi bi-clock-history"></i> My Orders
+                </a>
+            </li>
+            <li>
+                 <a href="profile.html" class="nav-item-link">
+                    <i class="bi bi-person"></i> Profile
+                </a>
+            </li>
+            <li style="margin-top: auto;">
+                <a href="login.html" id="logout-link" class="nav-item-link" style="color: #ef4444;">
+                    <i class="bi bi-box-arrow-left"></i> Logout
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-profile-box">
+            <div class="profile-name"><?php echo htmlspecialchars($userName); ?></div>
+            <div class="profile-email"><?php echo htmlspecialchars($userEmail); ?></div>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="header-section">
+            <div class="welcome-msg">
+                <h1>Hello, <?php echo htmlspecialchars($userName); ?>! 👋</h1>
+            </div>
+            <div class="header-controls">
+                <button class="btn-header-action" id="theme-mode-toggle" aria-label="Toggle Bright/Dark Configuration Mode">
+                    <i class="bi bi-moon-stars" id="theme-toggle-icon"></i>
+                </button>
+                <button class="btn-header-action" id="btn-notification-trigger" aria-label="Notifications">
+                    <i class="bi bi-bell"></i>
+                    <span class="notification-badge-dot" id="notif-dot"></span>
+                </button>
+            </div>
+        </header>
+
+        <section class="row g-4">
+            <div class="col-10 col-md-6 col-xl-4 mx-auto mx-md-0">
+                <article class="product-card" data-id="ripe-banana" data-title="Ripe Banana" data-price="60" data-avatar="🍌" data-unit="bunch">
+                    <div class="product-img-frame">
+                        <span class="badge-category">Premium</span>
+                        <i class="bi bi-brightness-high-fill" style="color: #eab308;"></i>
+                    </div>
+                    <div class="product-body">
+                        <h2 class="product-title">Ripe Banana</h2>
+                        <p class="product-desc">Perfectly sweetened, golden skin bananas sourced fresh from regional premium South Indian orchards.</p>
+                        <div class="price-row">
+                            <div>
+                                <span class="price-tag">₹60</span>
+                                <span class="price-unit">/ bunch</span>
+                            </div>
+                            <span class="min-order">Min: 1 bunch</span>
+                        </div>
+                        <div class="quantity-control">
+                            <button class="btn-qty btn-minus" type="button" aria-label="Decrease counter">-</button>
+                            <span class="qty-val">1</span>
+                            <button class="btn-qty btn-plus" type="button" aria-label="Increase counter">+</button>
+                        </div>
+                        <button class="btn-add-cart" type="button">
+                            <i class="bi bi-cart-plus"></i> Add to Cart
+                        </button>
+                    </div>
+                </article>
+            </div>
+
+            <div class="col-10 col-md-6 col-xl-4 mx-auto mx-md-0">
+                <article class="product-card" data-id="unripe-banana" data-title="Unripe Banana" data-price="450" data-avatar="🍏" data-unit="crate">
+                    <div class="product-img-frame">
+                        <span class="badge-category">Fresh Stock</span>
+                        <i class="bi bi-shield-fill-check" style="color: #22c55e;"></i>
+                    </div>
+                   <div class="product-body">
+                        <h2 class="product-title">Unripe Banana</h2>
+                       <p class="product-desc">Firm green structural bananas ideal for long-distance logistics processing and commercial warehousing.</p>
+                        <div class="price-row">
+                            <div>
+                                <span class="price-tag">₹450</span>
+                                <span class="price-unit">/ crate</span>
+                            </div>
+                            <span class="min-order">Min: 1 crate</span>
+                        </div>
+                        <div class="quantity-control">
+                            <button class="btn-qty btn-minus" type="button" aria-label="Decrease counter">-</button>
+                            <span class="qty-val">1</span>
+                            <button class="btn-qty btn-plus" type="button" aria-label="Increase counter">+</button>
+                        </div>
+                        <button class="btn-add-cart" type="button">
+                            <i class="bi bi-cart-plus"></i> Add to Cart
+                        </button>
+                    </div>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Logout Logic
+            const logoutLink = document.getElementById('logout-link');
+            if (logoutLink) {
+                logoutLink.addEventListener('click', function() {
+                    localStorage.removeItem('as_group_cart');
+                });
+            }
+
+            const cartCounter = document.getElementById('cart-counter');
+            const productCards = document.querySelectorAll('.product-card');
+            
+            // Bright/Dark Scheme Theme Engine Logic
+            const themeToggleBtn = document.getElementById('theme-mode-toggle');
+            const themeToggleIcon = document.getElementById('theme-toggle-icon');
+            
+            function configureThemeOnLoad() {
+                const storedTheme = localStorage.getItem('as_group_theme') || 'light';
+                document.documentElement.setAttribute('data-bs-theme', storedTheme);
+                if (storedTheme === 'dark') {
+                    themeToggleIcon.className = 'bi bi-sun';
+                } else {
+                    themeToggleIcon.className = 'bi bi-moon-stars';
+                }
+            }
+            
+            themeToggleBtn.addEventListener('click', function() {
+                let currentTheme = document.documentElement.getAttribute('data-bs-theme');
+                let nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                
+                document.documentElement.setAttribute('data-bs-theme', nextTheme);
+                localStorage.setItem('as_group_theme', nextTheme);
+                
+                if (nextTheme === 'dark') {
+                    themeToggleIcon.className = 'bi bi-sun';
+                } else {
+                    themeToggleIcon.className = 'bi bi-moon-stars';
+                }
+            });
+
+            // Notification Mechanism Engine
+            const notifTrigger = document.getElementById('btn-notification-trigger');
+            const notifDot = document.getElementById('notif-dot');
+            const toastEl = document.getElementById('notification-toast');
+            const toastBodyContent = document.getElementById('toast-body-content');
+            const bootstrapToast = new bootstrap.Toast(toastEl);
+
+            notifTrigger.addEventListener('click', function() {
+                let cart = JSON.parse(localStorage.getItem('as_group_cart')) || [];
+                if(cart.length > 0) {
+                    toastBodyContent.innerHTML = `You have <b>${cart.length} distinct items</b> active inside your shopping cart. Ready to complete checkout updates?`;
+                } else {
+                    toastBodyContent.innerHTML = "Your shopping cart is currently empty. Add fresh stocks to configure processing pipelines!";
+                }
+                bootstrapToast.show();
+                notifDot.style.display = 'none'; 
+            });
+
+            // Sync structural header count on load
+            function updateHeaderBadge() {
+                let cart = JSON.parse(localStorage.getItem('as_group_cart')) || [];
+                let totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
+                cartCounter.textContent = totalItems;
+            }
+            
+            // Initialization Steps
+            configureThemeOnLoad();
+            updateHeaderBadge();
+
+            productCards.forEach(card => {
+                const minusBtn = card.querySelector('.btn-minus');
+                const plusBtn = card.querySelector('.btn-plus');
+                const qtyDisplay = card.querySelector('.qty-val');
+               const addCartBtn = card.querySelector('.btn-add-cart');
+
+                // Quantity Control Event Handling
+                plusBtn.addEventListener('click', function() {
+                    let currentQty = parseInt(qtyDisplay.textContent);
+                    qtyDisplay.textContent = currentQty + 1;
+                });
+
+                minusBtn.addEventListener('click', function() {
+                    let currentQty = parseInt(qtyDisplay.textContent);
+                    if (currentQty > 1) {
+                        qtyDisplay.textContent = currentQty - 1;
+                    }
+                });
+
+                // Add to Cart LocalStorage Logic Engine
+                addCartBtn.addEventListener('click', function() {
+                    let currentQty = parseInt(qtyDisplay.textContent);
+                    
+                    const productData = {
+                        id: card.getAttribute('data-id'),
+                        title: card.getAttribute('data-title'),
+                        price: parseFloat(card.getAttribute('data-price')),
+                        avatar: card.getAttribute('data-avatar'),
+                        unit: card.getAttribute('data-unit'),
+                        quantity: currentQty
+                    };
+
+                    let cart = JSON.parse(localStorage.getItem('as_group_cart')) || [];
+                    
+                    let existingItemIndex = cart.findIndex(item => item.id === productData.id);
+                    if (existingItemIndex > -1) {
+                        cart[existingItemIndex].quantity += productData.quantity;
+                    } else {
+                        cart.push(productData);
+                    }
+
+                    localStorage.setItem('as_group_cart', JSON.stringify(cart));
+                    updateHeaderBadge();
+
+                    // Button Confirmation Feedback Animation
+                    const originalContent = addCartBtn.innerHTML;
+                    addCartBtn.innerHTML = '<i class="bi bi-check-lg"></i> Added!';
+                    addCartBtn.style.backgroundColor = '#22c55e';
+                    
+                    setTimeout(() => {
+                        addCartBtn.innerHTML = originalContent;
+                        addCartBtn.style.backgroundColor = '';
+                        qtyDisplay.textContent = '1';
+                        
+                        window.location.href = "cart.html";
+                    }, 800);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

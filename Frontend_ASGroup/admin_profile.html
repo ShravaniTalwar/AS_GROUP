@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AS Group - Admin Profile</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --sidebar-bg: #0b1a30;
+            --main-bg: #f4f6f9;
+            --accent-gold: #dbaf37;
+            --text-dark: #0b1a30;
+            --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            
+            /* Light mode specific defaults */
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --ledger-row-border: #f1f5f9;
+            --role-tag-bg: #f1f5f9;
+            --role-tag-text: #475569;
+        }
+
+        /* --- Dark Mode Variables --- */
+        [data-theme="dark"] {
+            --main-bg: #0b1320;
+            --card-bg: #111c2e;
+            --text-dark: #ffffff;
+            --text-main: #cbd5e1;
+            --text-muted: #94a3b8;
+            --border-color: #1e293b;
+            --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            --ledger-row-border: #17253a;
+            --role-tag-bg: #1e293b;
+            --role-tag-text: #dbaf37;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--main-bg);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* --- Sidebar Navigation --- */
+        .sidebar {
+            width: 260px;
+            background-color: var(--sidebar-bg);
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 100;
+            padding-bottom: 20px;
+        }
+
+        .sidebar-header {
+            padding: 24px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .sidebar-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1.5px solid var(--accent-gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            padding: 2px;
+        }
+
+        .sidebar-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .brand-details h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.15rem;
+            margin: 0;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            color: #ffffff;
+        }
+
+        .brand-details p {
+            color: var(--accent-gold);
+            font-size: 0.7rem;
+            margin: 2px 0 0 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .sidebar-menu {
+            padding: 24px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            flex-grow: 1;
+        }
+
+        .nav-menu-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            color: rgba(255, 255, 255, 0.65);
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .nav-menu-item i {
+            margin-right: 14px;
+            font-size: 1.15rem;
+        }
+
+        .nav-menu-item:hover {
+            color: #ffffff;
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-menu-item.active {
+            background-color: var(--accent-gold);
+            color: var(--sidebar-bg);
+            font-weight: 600;
+        }
+
+        /* Logout specific style */
+        .nav-menu-item.logout-btn {
+            color: #ff6b6b;
+            margin-top: auto;
+        }
+        .nav-menu-item.logout-btn:hover {
+            background-color: rgba(255, 107, 107, 0.1);
+            color: #ff6b6b;
+        }
+
+        /* --- Main Content Workspace --- */
+        .main-workspace {
+            margin-left: 260px;
+            flex-grow: 1;
+            padding: 30px 40px;
+            min-width: 0;
+        }
+
+        .workspace-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 35px;
+        }
+
+        .welcome-meta h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--text-dark);
+            margin: 0 0 4px 0;
+            font-weight: 700;
+        }
+
+        .welcome-meta p {
+            color: var(--text-muted);
+            margin: 0;
+            font-size: 0.95rem;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .search-bar-wrapper {
+            position: relative;
+            width: 280px;
+        }
+
+        .search-bar-wrapper input {
+            width: 100%;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 10px 16px 10px 40px;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            color: var(--text-main);
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        .search-bar-wrapper i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        .action-icon-btn {
+            width: 42px;
+            height: 42px;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            color: var(--text-main);
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            background-color: #ef4444;
+            color: #ffffff;
+            font-size: 0.65rem;
+            font-weight: 700;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* --- Profile Page Components --- */
+        .profile-card-container {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            max-width: 1000px;
+        }
+
+        .profile-banner-card {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            position: relative;
+            transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .profile-banner-top {
+            height: 140px;
+            background-color: #112d4e;
+        }
+
+        .profile-avatar-wrapper {
+            position: absolute;
+            top: 75px;
+            left: 40px;
+            width: 100px;
+            height: 100px;
+            background-color: var(--accent-gold);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #0b1a30;
+            border: 4px solid var(--card-bg);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: border-color 0.3s;
+        }
+
+        .profile-banner-meta {
+            padding: 50px 40px 30px 40px;
+        }
+
+        .profile-banner-meta h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin: 0 0 4px 0;
+        }
+
+        .profile-banner-meta p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin: 0 0 16px 0;
+        }
+
+        .badge-role-tag {
+            background-color: var(--role-tag-bg);
+            color: var(--role-tag-text);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* Account Ledger Table Component */
+        .account-details-card {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-color);
+            padding: 35px 40px;
+            transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .account-details-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 25px;
+        }
+
+        .info-ledger-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--ledger-row-border);
+            font-size: 0.95rem;
+            transition: border-color 0.3s;
+        }
+
+        .info-ledger-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-ledger-label {
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        .info-ledger-value {
+            color: var(--text-dark);
+            font-weight: 600;
+            text-align: right;
+        }
+
+        .btn-action-profile {
+            background-color: var(--sidebar-bg);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-top: 15px;
+            transition: opacity 0.2s ease, background-color 0.3s;
+        }
+
+        [data-theme="dark"] .btn-action-profile {
+            background-color: var(--accent-gold);
+            color: var(--sidebar-bg);
+        }
+
+        .btn-action-profile:hover {
+            opacity: 0.9;
+        }
+
+        /* Restriction Guard overlay style */
+        .secure-lock-screen {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            padding: 60px 40px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--card-shadow);
+            transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <img src="logo.jpeg" alt="AS Group Logo" onerror="this.src='https://via.placeholder.com/40/112d4e/dbaf37?text=AS'">
+                </div>
+                <div class="brand-details">
+                    <h2>AS Group</h2>
+                    <p>Admin Portal</p>
+                </div>
+            </div>
+
+            <nav class="sidebar-menu">
+                <a href="admin_dashboard.html" class="nav-menu-item">
+                    <i class="bi bi-grid-1x2-fill"></i> Overview
+                </a>
+                <a href="delivery.html" class="nav-menu-item">
+                    <i class="bi bi-truck"></i> Deliveries
+                </a>
+                <a href="receive.html" class="nav-menu-item">
+                    <i class="bi bi-box-seam"></i> Receives
+                </a>
+                <a href="stock.html" class="nav-menu-item">
+                    <i class="bi bi-activity"></i> Stock
+                </a>
+                <a href="admin_profile.html" class="nav-menu-item active">
+                    <i class="bi bi-person"></i> Profile
+                </a>
+                
+                <a onclick="handleLogout()" class="nav-menu-item logout-btn">
+                    <i class="bi bi-box-arrow-right"></i> Logout
+                </a>
+            </nav>
+        </aside>
+
+        <main class="main-workspace">
+            
+            <header class="workspace-header">
+                <div class="welcome-meta">
+                    <h1>Profile</h1>
+                    <p id="dynamicPanelGreeting">Loading session...</p>
+                </div>
+
+                <div class="header-actions">
+                    <div class="search-bar-wrapper">
+                        <i class="bi bi-search"></i>
+                        <input type="text" placeholder="Search profile options...">
+                    </div>
+                    
+                    <div class="action-icon-btn" id="themeToggleBtn" title="Toggle Dark/Light Mode">
+                        <i class="bi bi-moon-fill" id="themeToggleIcon"></i>
+                    </div>
+
+                    <div class="action-icon-btn">
+                        <i class="bi bi-bell"></i>
+                        <span class="notification-badge">0</span>
+                    </div>
+                </div>
+            </header>
+
+            <div id="profileContentStage">
+                
+                <div id="accessDeniedState" class="secure-lock-screen d-none">
+                    <i class="bi bi-shield-lock-fill text-danger mb-3" style="font-size: 3rem; display: block;"></i>
+                    <h4 class="fw-bold text-dark mb-2">Administrative Profile Locked</h4>
+                    <p class="text-muted mx-auto mb-4" style="max-width: 480px;">
+                        No active administrative portal session key was detected. Please return to the login interface to sign in.
+                    </p>
+                    <a href="index.html" class="btn btn-primary px-4 py-2" style="background-color: var(--sidebar-bg); border: none; border-radius: 10px;">
+                        Go to Login Portal
+                    </a>
+                </div>
+
+                <div id="verifiedProfileState" class="profile-card-container d-none">
+                    
+                    <div class="profile-banner-card">
+                        <div class="profile-banner-top"></div>
+                        <div class="profile-avatar-wrapper" id="profileIntialBlock">A</div>
+                        <div class="profile-banner-meta">
+                            <h2 id="profileTopName">Loading...</h2>
+                            <p id="profileTopEmail">Loading...</p>
+                            <span class="badge-role-tag">Super Admin</span>
+                        </div>
+                    </div>
+
+                    <div class="account-details-card">
+                        <h3>Account Details</h3>
+                        
+                        <div class="info-ledger-row">
+                            <div class="info-ledger-label">Full Name</div>
+                            <div class="info-ledger-value" id="fieldFullName">Loading...</div>
+                        </div>
+                        <div class="info-ledger-row">
+                            <div class="info-ledger-label">Email</div>
+                            <div class="info-ledger-value" id="fieldEmail">Loading...</div>
+                        </div>
+                        <div class="info-ledger-row">
+                            <div class="info-ledger-label">Role</div>
+                            <div class="info-ledger-value">Super Administrator</div>
+                        </div>
+                        <div class="info-ledger-row">
+                            <div class="info-ledger-label">Phone</div>
+                            <div class="info-ledger-value">+91 98765 43210</div>
+                        </div>
+                        <div class="info-ledger-row">
+                            <div class="info-ledger-label">Department</div>
+                            <div class="info-ledger-value">Operations & Logistics</div>
+                        </div>
+                        <div class="info-ledger-row">
+                            <div class="info-ledger-label">Joined</div>
+                            <div class="info-ledger-value">March 12, 2021</div>
+                        </div>
+
+                        <button class="btn-action-profile">Edit Profile</button>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            evaluateProfileAccessAuthorization();
+            initThemeSetup();
+        });
+
+       // Updated Logout function
+        function handleLogout() {
+            if (confirm("Are you sure you want to log out?")) {
+                // Clear only the keys related to your app to avoid clearing other site data
+                for (let i = localStorage.length - 1; i >= 0; i--) {
+                    const key = localStorage.key(i);
+                    if (key.startsWith('as_group_admin_')) {
+                        localStorage.removeItem(key);
+                    }
+                }
+                // Redirect to login page
+                window.location.href = 'login.html'; 
+            }
+        }
+
+        function evaluateProfileAccessAuthorization() {
+            let contextAdminEmail = "";
+            
+            for (let i = 0; i < localStorage.length; i++) {
+                const storageKey = localStorage.key(i);
+                if (storageKey.startsWith('as_group_admin_key_')) {
+                    contextAdminEmail = storageKey.replace('as_group_admin_key_', '');
+                    break;
+                }
+            }
+
+            if (!contextAdminEmail) {
+                document.getElementById('dynamicPanelGreeting').innerText = "Access Restricted";
+                document.getElementById('accessDeniedState').classList.remove('d-none');
+                return;
+            }
+
+            const registeredName = localStorage.getItem(`as_group_admin_name_${contextAdminEmail}`) || "Administrator";
+            const firstLetter = registeredName.trim().charAt(0).toUpperCase();
+
+            document.getElementById('dynamicPanelGreeting').innerText = `Welcome back, ${registeredName}`;
+            document.getElementById('profileTopName').innerText = registeredName;
+            document.getElementById('profileTopEmail').innerText = contextAdminEmail;
+            document.getElementById('fieldFullName').innerText = registeredName;
+            document.getElementById('fieldEmail').innerText = contextAdminEmail;
+            document.getElementById('profileIntialBlock').innerText = firstLetter;
+
+            document.getElementById('verifiedProfileState').classList.remove('d-none');
+        }
+
+        function initThemeSetup() {
+            const themeToggleBtn = document.getElementById('themeToggleBtn');
+            const themeToggleIcon = document.getElementById('themeToggleIcon');
+            
+            const currentTheme = localStorage.getItem('theme') || 'light';
+            
+            if (currentTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                themeToggleIcon.classList.replace('bi-moon-fill', 'bi-sun-fill');
+            }
+
+            themeToggleBtn.addEventListener('click', function() {
+                let theme = document.documentElement.getAttribute('data-theme');
+                
+                if (theme === 'dark') {
+                    document.documentElement.setAttribute('data-theme', 'light');
+                    themeToggleIcon.classList.replace('bi-sun-fill', 'bi-moon-fill');
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                    themeToggleIcon.classList.replace('bi-moon-fill', 'bi-sun-fill');
+                    localStorage.setItem('theme', 'dark');
+                }
+            });
+        }
+    </script>
+</body>
+</html>

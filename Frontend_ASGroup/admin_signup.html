@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AS Group - Admin Registration</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #051329;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .signup-card {
+            width: 100%;
+            max-width: 680px;
+            background-color: #ffffff;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+        }
+
+        .brand-header {
+            background-color: #0b1e33;
+            padding: 35px 40px 30px 40px;
+            text-align: center;
+        }
+
+        .brand-logo-circle {
+            width: 85px;
+            height: 85px;
+            border: 2px solid #dbaf37;
+            border-radius: 50%;
+            margin: 0 auto 15px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 5px;
+        }
+
+        .brand-logo-circle img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .brand-title {
+            color: #ffffff;
+            font-size: 1.85rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+            letter-spacing: 0.5px;
+        }
+
+        .brand-subtitle {
+            color: #dbaf37;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 0;
+        }
+
+        .nav-tabs-custom {
+            display: flex;
+            border-bottom: 1px solid #e2e8f0;
+            background-color: #f8fafc;
+        }
+
+        .tab-item {
+            flex: 1;
+            text-align: center;
+            padding: 15px 10px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #64748b;
+            text-decoration: none;
+            border-bottom: 2.5px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .tab-item.active {
+            color: #0b1e33;
+            background-color: #ffffff;
+            border-bottom-color: #0b1e33;
+        }
+
+        .form-content-area {
+            padding: 35px 40px 40px 40px;
+        }
+
+        .form-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #475569;
+            margin-bottom: 8px;
+        }
+
+        .form-control, .form-select {
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            padding: 11px 14px;
+            font-size: 0.95rem;
+            color: #1e293b;
+            transition: all 0.2s ease;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #dbaf37;
+            box-shadow: 0 0 0 3px rgba(219, 175, 55, 0.15);
+            outline: none;
+        }
+
+        .password-input-container {
+            position: relative;
+        }
+
+        .password-toggle-eye {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+            cursor: pointer;
+        }
+
+        .password-toggle-eye:hover {
+            color: #475569;
+        }
+
+        .btn-submit-account {
+            background-color: #051329;
+            color: #ffffff;
+            width: 100%;
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: background-color 0.2s;
+            box-shadow: 0 4px 12px rgba(5, 19, 41, 0.2);
+        }
+
+        .btn-submit-account:hover {
+            background-color: #0b1e33;
+            color: #ffffff;
+        }
+
+        .footer-login-redirect {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+
+        .footer-login-redirect a {
+            color: #0b1e33;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .footer-login-redirect a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="signup-card">
+        <div class="brand-header">
+            <div class="brand-logo-circle">
+                <img src="logo.jpeg" alt="AS Group Logo">
+            </div>
+            <h1 class="brand-title">AS Group</h1>
+            <p class="brand-subtitle">Admin Portal Workspace</p>
+        </div>
+
+        <div class="nav-tabs-custom">
+            <a href="signup.html" class="tab-item">User Registration</a>
+            <a href="admin_signup.html" class="tab-item active">Admin Registration</a>
+        </div>
+
+        <div class="form-content-area">
+            <form action="admin_signup.html" method="POST" id="adminSignupForm">
+                
+                <div class="row g-4 mb-4">
+                    <div class="col-12 col-md-6">
+                        <div class="mb-3">
+                            <label for="adminName" class="form-label">Admin Full Name</label>
+                            <input type="text" class="form-control" id="adminName" placeholder="e.g., Raj Sharma" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="adminEmail" class="form-label">Admin Email Address</label>
+                            <input type="email" class="form-control" id="adminEmail" placeholder="admin@asgroup.com" required>
+                        </div>
+                        
+                        <div class="mb-0">
+                            <label for="adminSecurityKey" class="form-label">Admin Security Key</label>
+                            <div class="password-input-container">
+                                <input type="password" class="form-control" id="adminSecurityKey" placeholder="Create workspace password" required>
+                                <i class="bi bi-eye password-toggle-eye" id="toggleSecurityKeyIcon"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-6">
+                        <div class="mb-3">
+                            <label for="adminPhone" class="form-label">Phone Number</label>
+                            <input type="tel" class="form-control" id="adminPhone" placeholder="e.g., +91 98765 43210" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="adminRole" class="form-label">Assigned Role</label>
+                            <input type="text" class="form-control" id="adminRole" placeholder="e.g., Super Administrator" required>
+                        </div>
+                        
+                        <div class="mb-0">
+                            <label for="adminDepartment" class="form-label">Corporate Department</label>
+                            <select class="form-select" id="adminDepartment" required>
+                                <option value="" disabled selected>Select department division</option>
+                                <option value="Operations & Logistics">Operations & Logistics</option>
+                                <option value="Procurement & Quality Control">Procurement & Quality Control</option>
+                                <option value="Inventory & Stock Management">Inventory & Stock Management</option>
+                                <option value="Finance & Executive Dashboard">Finance & Corporate Affairs</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4 pt-2">
+                    <button type="submit" class="btn-submit-account mb-3">Register Admin Access</button>
+                    <div class="footer-login-redirect">
+                        Already registered? <a href="login.html">Sign In</a>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggleIcon = document.getElementById('toggleSecurityKeyIcon');
+            const keyField = document.getElementById('adminSecurityKey');
+
+            toggleIcon.addEventListener('click', function() {
+                const currentType = keyField.getAttribute('type');
+                if (currentType === 'password') {
+                    keyField.setAttribute('type', 'text');
+                    toggleIcon.classList.remove('bi-eye');
+                    toggleIcon.classList.add('bi-eye-slash');
+                } else {
+                    keyField.setAttribute('type', 'password');
+                    toggleIcon.classList.remove('bi-eye-slash');
+                    toggleIcon.classList.add('bi-eye');
+                }
+            });
+
+            // LocalStorage Sync Engine matching the admin workspace identifier rules inside login.html
+            document.getElementById('adminSignupForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const email = document.getElementById('adminEmail').value.trim();
+                const key = document.getElementById('adminSecurityKey').value;
+                const storageKey = `as_group_admin_key_${email}`;
+
+                localStorage.setItem(storageKey, key);
+                alert('Admin workspace account created successfully! Redirecting to sign in...');
+                window.location.href = 'login.html';
+            });
+        });
+    </script>
+</body>
+</html>

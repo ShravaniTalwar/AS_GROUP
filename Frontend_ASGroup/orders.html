@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AS Group - My Orders</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --sidebar-bg: #0b1e33;
+            --main-bg: #f8fafc;
+            --card-bg: #ffffff;
+            --gold-primary: #dbaf37;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --qty-bg: #f1f5f9;
+        }
+
+        [data-bs-theme="dark"] {
+            --sidebar-bg: #030712;
+            --main-bg: #0f172a;
+            --card-bg: #1e293b;
+            --text-dark: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+            --qty-bg: #334155;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--main-bg);
+            color: var(--text-dark);
+            min-height: 100vh;
+            overflow-x: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .sidebar {
+            width: 260px;
+            background-color: var(--sidebar-bg);
+            min-height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 24px 0;
+            z-index: 1000;
+        }
+
+        .sidebar-brand-box {
+            padding: 0 24px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .sidebar-brand-box img {
+            max-height: 75px;
+            width: auto;
+        }
+
+        .nav-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            flex-grow: 1;
+        }
+
+        .nav-item-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 24px;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .nav-item-link:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-item-link.active {
+            color: #051329;
+            background-color: var(--gold-primary);
+            font-weight: 600;
+        }
+
+        .sidebar-profile-box {
+            padding: 20px 24px 0 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .profile-name { color: #ffffff; font-weight: 600; font-size: 0.95rem; }
+        .profile-email { color: rgba(255, 255, 255, 0.5); font-size: 0.8rem; word-break: break-all; }
+
+        .main-content {
+            margin-left: 260px;
+            padding: 40px;
+        }
+
+        .header-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 35px;
+        }
+
+        .header-controls {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .btn-header-action {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .btn-header-action:hover {
+            background: var(--qty-bg);
+            color: var(--text-dark);
+        }
+
+        .notification-badge-dot {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            width: 10px;
+            height: 10px;
+            background-color: #ef4444;
+            border-radius: 50%;
+        }
+
+        .analytics-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .icon-wrapper {
+            width: 56px;
+            height: 56px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .analytics-val {
+            font-size: 1.6rem;
+            font-weight: 700;
+        }
+
+        .orders-wrapper-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 30px;
+        }
+
+        .custom-table th {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            padding: 16px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .custom-table td {
+            padding: 18px 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .badge-status {
+            padding: 6px 12px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .badge-pending { background-color: #fef3c7; color: #d97706; }
+
+        .state-view-card {
+            text-align: center;
+            padding: 60px 20px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+        }
+
+        .toast-container {
+            z-index: 1060;
+        }
+
+        @media (max-width: 991.98px) {
+            .sidebar { transform: translateX(-100%); }
+            .main-content { margin-left: 0; padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="notification-toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header" style="background-color: #0b1e33; color: white;">
+                <i class="bi bi-bell-fill me-2"></i>
+                <strong class="me-auto">AS Group Notifications</strong>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body" id="toast-body-content" style="background: var(--card-bg); color: var(--text-dark);">
+                Your orders parameters have loaded safely.
+            </div>
+        </div>
+    </div>
+
+    <aside class="sidebar">
+        <div class="sidebar-brand-box">
+            <div class="d-inline-block p-1 bg-white rounded-circle mb-2" style="width: 85px; height: 85px; overflow: hidden; border: 2px solid var(--gold-primary);">
+                <img src="logo.jpeg" alt="AS Group Corporate Logo" class="w-100 h-100 rounded-circle" style="object-fit: cover;">
+            </div>
+            <h5 class="text-white m-0 small fw-bold" style="letter-spacing: 0.5px;">AS Group</h5>
+            <span class="d-block text-white-50 small mt-1" style="font-size: 0.75rem; letter-spacing: 1px; text-transform: uppercase;">User Portal</span>
+        </div>
+        <ul class="nav-menu">
+            <li><a href="place_order.html" class="nav-item-link"><i class="bi bi-box-seam"></i> Place Order</a></li>
+            <li><a href="cart.html" class="nav-item-link"><i class="bi bi-cart"></i> Cart (<span id="sidebar-cart-counter">0</span>)</a></li>
+            <li><a href="orders.html" class="nav-item-link active"><i class="bi bi-clock-history"></i> My Orders</a></li>
+            <li><a href="profile.html" class="nav-item-link"><i class="bi bi-person"></i> Profile</a></li>
+            <li style="margin-top: auto;">
+                <a href="login.html" id="logout-link" class="nav-item-link" style="color: #ef4444;">
+                    <i class="bi bi-box-arrow-left"></i> Logout
+                </a>
+            </li>
+        </ul>
+        <div class="sidebar-profile-box">
+            <div class="profile-name"><?php echo htmlspecialchars($userName); ?></div>
+            <div class="profile-email"><?php echo htmlspecialchars($userEmail); ?></div>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="header-section">
+            <div>
+                <h1 class="fw-bold fs-3 mb-1">My Orders</h1>
+                <p class="text-muted small mb-0">Track your structural order transactions</p>
+            </div>
+            <div class="header-controls">
+                <button class="btn-header-action" id="theme-mode-toggle" aria-label="Toggle Bright/Dark Mode">
+                    <i class="bi bi-moon-stars" id="theme-toggle-icon"></i>
+                </button>
+                <button class="btn-header-action" id="btn-notification-trigger" aria-label="Notifications">
+                    <i class="bi bi-bell"></i>
+                    <span class="notification-badge-dot" id="notif-dot"></span>
+                </button>
+            </div>
+        </header>
+
+        <div id="stats-display-area" class="row g-4 mb-5 d-none">
+            <div class="col-12 col-sm-6 col-xl-4">
+                <div class="analytics-card">
+                    <div class="icon-wrapper" style="background-color: #e0f2fe; color: #0369a1;"><i class="bi bi-receipt"></i></div>
+                    <div>
+                        <div id="stat-total-orders" class="analytics-val">0</div>
+                        <div class="text-muted small">Total Orders</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-xl-4">
+                <div class="analytics-card">
+                    <div class="icon-wrapper" style="background-color: #dcfce7; color: #15803d;"><i class="bi bi-currency-rupee"></i></div>
+                    <div>
+                        <div id="stat-total-spent" class="analytics-val">₹0</div>
+                        <div class="text-muted small">Total Spent</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-xl-4">
+                <div class="analytics-card">
+                    <div class="icon-wrapper" style="background-color: #fef3c7; color: #b45309;"><i class="bi bi-hourglass-split"></i></div>
+                    <div>
+                        <div id="stat-last-time" class="analytics-val">--</div>
+                        <div class="text-muted small">Last Order Date</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="orders-display-card" class="orders-wrapper-card d-none">
+            <h2 class="fs-5 fw-bold mb-4">Order History Pipeline</h2>
+            <div class="table-responsive">
+                <table class="table custom-table">
+                    <thead>
+                        <tr>
+                            <th>Tracking ID</th>
+                            <th>Items Breakdown</th>
+                            <th>Placed Date</th>
+                            <th>Total Price</th>
+                            <th>Workflow Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="orders-table-body">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="fallback-empty-orders" class="state-view-card d-none">
+            <span style="font-size: 3.5rem;" class="mb-3 d-block">📦</span>
+            <h2 class="fs-4 fw-bold mb-2">Welcome to your dashboard!</h2>
+            <p class="text-muted small mb-4">You haven't placed any orders yet. Once you make a purchase, your history tracking will show up right here.</p>
+            <a href="place_order.html" class="btn btn-primary px-4 py-2" style="background-color: #0b1e33; border: none; border-radius: 8px; font-weight: 600;">
+                Shop Now
+            </a>
+        </div>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Logout Logic
+            const logoutLink = document.getElementById('logout-link');
+            if (logoutLink) {
+                logoutLink.addEventListener('click', function() {
+                    localStorage.removeItem('as_group_cart');
+                });
+            }
+
+            const statsArea = document.getElementById('stats-display-area');
+            const ordersDisplayCard = document.getElementById('orders-display-card');
+            const fallbackEmptyOrders = document.getElementById('fallback-empty-orders');
+            const ordersTableBody = document.getElementById('orders-table-body');
+            
+            const statTotalOrders = document.getElementById('stat-total-orders');
+            const statTotalSpent = document.getElementById('stat-total-spent');
+            const statLastTime = document.getElementById('stat-last-time');
+            const sidebarCartCounter = document.getElementById('sidebar-cart-counter');
+
+            let tempCart = JSON.parse(localStorage.getItem('as_group_cart')) || [];
+            sidebarCartCounter.textContent = tempCart.reduce((sum, item) => sum + item.quantity, 0);
+
+            let ordersHistory = JSON.parse(localStorage.getItem('as_group_orders_history')) || [];
+
+            const themeToggleBtn = document.getElementById('theme-mode-toggle');
+            const themeToggleIcon = document.getElementById('theme-toggle-icon');
+            
+            function configureThemeOnLoad() {
+                const storedTheme = localStorage.getItem('as_group_theme') || 'light';
+                document.documentElement.setAttribute('data-bs-theme', storedTheme);
+                if (storedTheme === 'dark') {
+                    themeToggleIcon.className = 'bi bi-sun';
+                } else {
+                    themeToggleIcon.className = 'bi bi-moon-stars';
+                }
+            }
+            
+            themeToggleBtn.addEventListener('click', function() {
+                let currentTheme = document.documentElement.getAttribute('data-bs-theme');
+                let nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                
+                document.documentElement.setAttribute('data-bs-theme', nextTheme);
+                localStorage.setItem('as_group_theme', nextTheme);
+                
+                if (nextTheme === 'dark') {
+                    themeToggleIcon.className = 'bi bi-sun';
+                } else {
+                    themeToggleIcon.className = 'bi bi-moon-stars';
+                }
+            });
+
+            const notifTrigger = document.getElementById('btn-notification-trigger');
+            const notifDot = document.getElementById('notif-dot');
+            const toastEl = document.getElementById('notification-toast');
+            const toastBodyContent = document.getElementById('toast-body-content');
+            const bootstrapToast = new bootstrap.Toast(toastEl);
+
+            notifTrigger.addEventListener('click', function() {
+                if(ordersHistory.length > 0) {
+                    toastBodyContent.innerHTML = `Your pipeline contains <b>${ordersHistory.length} tracked order settlements</b> synced safely.`;
+                } else {
+                    toastBodyContent.innerHTML = "Your layout contains no active line entries right now.";
+                }
+                bootstrapToast.show();
+                notifDot.style.display = 'none';
+            });
+
+            if (ordersHistory.length === 0) {
+                statsArea.classList.add('d-none');        
+                ordersDisplayCard.classList.add('d-none'); 
+                fallbackEmptyOrders.classList.remove('d-none'); 
+            } else {
+                fallbackEmptyOrders.classList.add('d-none');
+                statsArea.classList.remove('d-none');
+                ordersDisplayCard.classList.remove('d-none');
+
+                let totalSpentAmount = 0;
+                ordersTableBody.innerHTML = ''; 
+
+                ordersHistory.forEach(order => {
+                    totalSpentAmount += order.cost;
+                    const rowHtml = `
+                        <tr>
+                            <td class="fw-bold text-secondary">${order.id}</td>
+                            <td>${order.lines}</td>
+                            <td>${order.date}</td>
+                            <td class="fw-bold">₹${order.cost}</td>
+                            <td><span class="badge-status badge-pending">${order.status}</span></td>
+                        </tr>
+                    `;
+                    ordersTableBody.insertAdjacentHTML('beforeend', rowHtml);
+                });
+
+                statTotalOrders.textContent = ordersHistory.length;
+                statTotalSpent.textContent = "₹" + totalSpentAmount;
+                statLastTime.textContent = ordersHistory[0].date; 
+            }
+
+            configureThemeOnLoad();
+        });
+    </script>
+</body>
+</html>

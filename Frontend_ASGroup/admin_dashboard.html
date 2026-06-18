@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AS Group - Admin Portal</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --sidebar-bg: #0b1a30;
+            --main-bg: #f4f6f9;
+            --accent-gold: #dbaf37;
+            --text-dark: #0b1a30;
+            --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            
+            /* Theme Dynamic Colors */
+            --content-bg: #ffffff;
+            --border-color: #e2e8f0;
+            --text-muted: #64748b;
+            --card-bg: #ffffff;
+        }
+
+        /* --- Dark Mode Variables Overrides --- */
+        body.dark-mode {
+            --main-bg: #0f172a;
+            --content-bg: #1e293b;
+            --text-dark: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+            --card-bg: #1e293b;
+            --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--main-bg);
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            transition: background-color 0.3s ease;
+        }
+
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* --- Sidebar Navigation --- */
+        .sidebar {
+            width: 260px;
+            background-color: var(--sidebar-bg);
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 100;
+            padding-bottom: 20px;
+        }
+
+        .sidebar-header {
+            padding: 24px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .sidebar-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1.5px solid var(--accent-gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            padding: 2px;
+        }
+
+        .sidebar-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .brand-details h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.15rem;
+            margin: 0;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .brand-details p {
+            color: var(--accent-gold);
+            font-size: 0.7rem;
+            margin: 2px 0 0 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .sidebar-menu {
+            padding: 24px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            flex-grow: 1;
+        }
+
+        .nav-menu-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            color: rgba(255, 255, 255, 0.65);
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .nav-menu-item i {
+            margin-right: 14px;
+            font-size: 1.15rem;
+        }
+
+        .nav-menu-item:hover {
+            color: #ffffff;
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-menu-item.active {
+            background-color: var(--accent-gold);
+            color: var(--sidebar-bg);
+            font-weight: 600;
+        }
+
+        /* Added Logout CSS */
+        .logout-menu-item {
+            margin-top: auto;
+            color: #ef4444 !important;
+        }
+        .logout-menu-item:hover {
+            background-color: rgba(239, 68, 68, 0.1);
+        }
+
+        /* --- Main Content Workspace --- */
+        .main-workspace {
+            margin-left: 260px;
+            flex-grow: 1;
+            padding: 30px 40px;
+            min-width: 0;
+        }
+
+        .workspace-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 35px;
+        }
+
+        .welcome-meta h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--text-dark);
+            margin: 0 0 4px 0;
+            font-weight: 700;
+        }
+
+        .welcome-meta p {
+            color: var(--text-muted);
+            margin: 0;
+            font-size: 0.95rem;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .search-bar-wrapper {
+            position: relative;
+            width: 280px;
+        }
+
+        .search-bar-wrapper input {
+            width: 100%;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 10px 16px 10px 40px;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            color: var(--text-dark);
+            transition: all 0.3s ease;
+        }
+
+        .search-bar-wrapper i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        .action-icon-btn {
+            width: 42px;
+            height: 42px;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            color: var(--text-dark);
+            transition: all 0.3s ease;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            background-color: #ef4444;
+            color: #ffffff;
+            font-size: 0.65rem;
+            font-weight: 700;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dashboard-panel-view {
+            display: none;
+        }
+
+        .dashboard-panel-view.active-view {
+            display: block;
+        }
+
+        /* --- Metric Cards Blocks --- */
+        .metric-cards-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .metric-card {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: var(--card-shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode .metric-card {
+            border: 1px solid var(--border-color);
+        }
+
+        .metric-data h3 {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            font-weight: 600;
+            margin: 0 0 12px 0;
+        }
+
+        .metric-data .value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 6px;
+        }
+
+        .metric-data .trend {
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        .metric-icon-box {
+            width: 46px;
+            height: 46px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .metric-icon-box.deliveries { background-color: #eff6ff; color: #2563eb; }
+        .metric-icon-box.stock { background-color: #fefbeb; color: #d97706; }
+        .metric-icon-box.revenue { background-color: #ecfdf5; color: #059669; }
+        .metric-icon-box.receives { background-color: #f5f3ff; color: #7c3aed; }
+
+        body.dark-mode .metric-icon-box {
+            background-color: rgba(255, 255, 255, 0.05) !important;
+        }
+
+        /* --- Analytics Data Visualizers Section --- */
+        .visualizers-grid {
+            display: grid;
+            grid-template-columns: 55% 42.5%;
+            gap: 2.5%;
+            margin-bottom: 30px;
+        }
+
+        .visualizer-card {
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode .visualizer-card {
+            border: 1px solid var(--border-color);
+        }
+
+        .visualizer-card h2 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin: 0 0 4px 0;
+        }
+
+        .visualizer-card p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+        }
+
+        .bar-chart-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            height: 200px;
+            padding-top: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .chart-bar-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+        }
+
+        .bar-pillars {
+            display: flex;
+            align-items: flex-end;
+            gap: 4px;
+            height: 160px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .pillar {
+            width: 16px;
+            border-radius: 4px 4px 0 0;
+            height: 0px; 
+            transition: height 0.5s ease;
+        }
+        .pillar.gold { background-color: var(--accent-gold); }
+        .pillar.navy { background-color: var(--sidebar-bg); }
+        body.dark-mode .pillar.navy { background-color: #3b82f6; }
+
+        .bar-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 10px;
+            font-weight: 500;
+        }
+
+        .line-chart-container {
+            position: relative;
+            height: 200px;
+            width: 100%;
+        }
+
+        .line-chart-container svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        body.dark-mode svg path {
+            stroke: var(--border-color);
+        }
+
+        /* --- Data Lists Tables Components --- */
+        .data-table-card {
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode .data-table-card {
+            border: 1px solid var(--border-color);
+        }
+
+        .card-table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .card-table-header h2 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin: 0;
+        }
+
+        .empty-table-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* --- Profile Interface Module Panels --- */
+        .profile-banner-card {
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode .profile-banner-card {
+            border: 1px solid var(--border-color);
+        }
+
+        .profile-top-accent {
+            height: 140px;
+            background-color: var(--accent-gold);
+        }
+
+        .profile-meta-block {
+            padding: 0 40px 30px 40px;
+            position: relative;
+            margin-top: -50px;
+        }
+
+        .profile-avatar-circle {
+            width: 100px;
+            height: 100px;
+            background-color: var(--sidebar-bg);
+            color: var(--accent-gold);
+            border: 4px solid var(--card-bg);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            margin-bottom: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .profile-meta-block h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.65rem;
+            color: var(--text-dark);
+            font-weight: 700;
+            margin: 0 0 4px 0;
+        }
+
+        .profile-meta-block p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin: 0 0 14px 0;
+        }
+
+        .role-pill-badge {
+            background-color: var(--main-bg);
+            color: var(--text-dark);
+            font-weight: 600;
+            font-size: 0.75rem;
+            padding: 4px 14px;
+            border-radius: 20px;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode .role-pill-badge {
+            background-color: #334155;
+        }
+
+        .details-grid-card {
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            padding: 35px 40px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode .details-grid-card {
+            border: 1px solid var(--border-color);
+        }
+
+        .details-grid-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.35rem;
+            color: var(--text-dark);
+            font-weight: 700;
+            margin: 0 0 25px 0;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 12px;
+        }
+
+        .info-data-row {
+            display: flex;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.95rem;
+        }
+
+        .info-data-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-data-label {
+            width: 30%;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .info-data-value {
+            width: 70%;
+            color: var(--text-dark);
+            font-weight: 600;
+            text-align: right;
+        }
+
+        .btn-action-footer {
+            background-color: var(--sidebar-bg);
+            color: #ffffff;
+            border: none;
+            border-radius: 14px;
+            padding: 16px;
+            width: 100%;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+        }
+
+        .btn-action-footer:hover {
+            background-color: #122846;
+        }
+        
+        body.dark-mode .btn-action-footer {
+            background-color: var(--accent-gold);
+            color: var(--sidebar-bg);
+        }
+        body.dark-mode .btn-action-footer:hover {
+            background-color: #c99e2e;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <img src="logo.jpeg" alt="AS Group Logo" onerror="this.src='https://via.placeholder.com/40/112d4e/dbaf37?text=AS'">
+                </div>
+                <div class="brand-details">
+                    <h2>AS Group</h2>
+                    <p>Admin Portal</p>
+                </div>
+            </div>
+
+            <nav class="sidebar-menu">
+                <a onclick="navigateToPanel('overview')" id="menuOverview" class="nav-menu-item active">
+                    <i class="bi bi-grid-1x2-fill"></i> Overview
+                </a>
+                <a href="delivery.html" class="nav-menu-item">
+                    <i class="bi bi-truck"></i> Deliveries
+                </a>
+                <a href="receive.html" class="nav-menu-item">
+                    <i class="bi bi-box-seam"></i> Receives
+                </a>
+                <a href="stock.html" class="nav-menu-item">
+                    <i class="bi bi-activity"></i> Stock
+                </a>
+                <a onclick="navigateToPanel('profile')" id="menuProfile" class="nav-menu-item">
+                    <i class="bi bi-person"></i> Profile
+                </a>
+                <a onclick="handleLogout()" class="nav-menu-item logout-menu-item">
+                    <i class="bi bi-box-arrow-right"></i> Logout
+                </a>
+            </nav>
+        </aside>
+
+        <main class="main-workspace">
+            
+            <header class="workspace-header">
+                <div class="welcome-meta">
+                    <h1 id="dynamicPanelTitle">Overview</h1>
+                    <p id="dynamicPanelGreeting">Welcome back</p>
+                </div>
+
+                <div class="header-actions">
+                    <div class="search-bar-wrapper">
+                        <i class="bi bi-search"></i>
+                        <input type="text" placeholder="Search...">
+                    </div>
+                    <div class="action-icon-btn" id="darkModeToggle" title="Toggle Dark Mode">
+                        <i class="bi bi-moon-stars" id="themeIcon"></i>
+                    </div>
+                    <div class="action-icon-btn">
+                        <i class="bi bi-bell"></i>
+                        <span class="notification-badge">0</span>
+                    </div>
+                </div>
+            </header>
+
+            <section id="panelOverview" class="dashboard-panel-view active-view">
+                <div class="metric-cards-row">
+                    <div class="metric-card">
+                        <div class="metric-data">
+                            <h3>Total Deliveries Today</h3>
+                            <div class="value">0</div>
+                            <div class="trend">No updates today</div>
+                        </div>
+                        <div class="metric-icon-box deliveries"><i class="bi bi-truck"></i></div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-data">
+                            <h3>Stock Available</h3>
+                            <div class="value">0 dz</div>
+                            <div class="trend">Inventory clean</div>
+                        </div>
+                        <div class="metric-icon-box stock"><i class="bi bi-box"></i></div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-data">
+                            <h3>Today's Revenue</h3>
+                            <div class="value">₹0</div>
+                            <div class="trend">Awaiting batches</div>
+                        </div>
+                        <div class="metric-icon-box revenue"><i class="bi bi-graph-up-arrow"></i></div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-data">
+                            <h3>Pending Receives</h3>
+                            <div class="value">0</div>
+                            <div class="trend">No arrivals logged</div>
+                        </div>
+                        <div class="metric-icon-box receives"><i class="bi bi-bell"></i></div>
+                    </div>
+                </div>
+
+                <div class="visualizers-grid">
+                    <div class="visualizer-card">
+                        <h2>Monthly Volume (dozens)</h2>
+                        <p>Deliveries vs Receives</p>
+                        <div class="bar-chart-container">
+                            <div class="chart-bar-group"><div class="bar-pillars"><div class="pillar gold" style="height: 0px;"></div><div class="pillar navy" style="height: 0px;"></div></div><div class="bar-label">Jan</div></div>
+                            <div class="chart-bar-group"><div class="bar-pillars"><div class="pillar gold" style="height: 0px;"></div><div class="pillar navy" style="height: 0px;"></div></div><div class="bar-label">Feb</div></div>
+                            <div class="chart-bar-group"><div class="bar-pillars"><div class="pillar gold" style="height: 0px;"></div><div class="pillar navy" style="height: 0px;"></div></div><div class="bar-label">Mar</div></div>
+                            <div class="chart-bar-group"><div class="bar-pillars"><div class="pillar gold" style="height: 0px;"></div><div class="pillar navy" style="height: 0px;"></div></div><div class="bar-label">Apr</div></div>
+                            <div class="chart-bar-group"><div class="bar-pillars"><div class="pillar gold" style="height: 0px;"></div><div class="pillar navy" style="height: 0px;"></div></div><div class="bar-label">May</div></div>
+                            <div class="chart-bar-group"><div class="bar-pillars"><div class="pillar gold" style="height: 0px;"></div><div class="pillar navy" style="height: 0px;"></div></div><div class="bar-label">Jun</div></div>
+                        </div>
+                    </div>
+
+                    <div class="visualizer-card">
+                        <h2>Weekly Revenue (₹ Lakhs)</h2>
+                        <p>Last 6 weeks</p>
+                        <div class="line-chart-container">
+                            <svg viewBox="0 0 300 160" preserveAspectRatio="none">
+                                <path d="M 10 140 Q 150 140 290 140" fill="none" stroke="#e2e8f0" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                            <div style="display: flex; justify-content: space-between; margin-top: 6px; font-size: 0.7rem; color: #94a3b8; font-weight: 500;">
+                                <span>W1</span><span>W2</span><span>W3</span><span>W4</span><span>W5</span><span>W6</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="data-table-card">
+                    <div class="card-table-header">
+                        <h2>Recent Deliveries</h2>
+                    </div>
+                    <div class="empty-table-state">
+                        <i class="bi bi-inbox mb-2" style="font-size: 1.5rem; display: block;"></i>
+                        No corporate delivery transactions recorded yet.
+                    </div>
+                </div>
+            </section>
+
+            <section id="panelProfile" class="dashboard-panel-view">
+                <div class="profile-banner-card">
+                    <div class="profile-top-accent"></div>
+                    <div class="profile-meta-block">
+                        <div class="profile-avatar-circle" id="profileInitialsBox">-</div>
+                        <h2 id="profileDisplayName">---</h2>
+                        <p id="profileDisplayEmail">---</p>
+                        <span class="role-pill-badge" id="profileDisplayBadge">---</span>
+                    </div>
+                </div>
+
+                <div class="details-grid-card">
+                    <h3>Account Details</h3>
+                    <div class="info-data-row">
+                        <div class="info-data-label">Full Name</div>
+                        <div class="info-data-value" id="fieldFullName">---</div>
+                    </div>
+                    <div class="info-data-row">
+                        <div class="info-data-label">Email</div>
+                        <div class="info-data-value" id="fieldEmail">---</div>
+                    </div>
+                    <div class="info-data-row">
+                        <div class="info-data-label">Role</div>
+                        <div class="info-data-value" id="fieldRole">---</div>
+                    </div>
+                    <div class="info-data-row">
+                        <div class="info-data-label">Phone</div>
+                        <div class="info-data-value" id="fieldPhone">---</div>
+                    </div>
+                    <div class="info-data-row">
+                        <div class="info-data-label">Department</div>
+                        <div class="info-data-value" id="fieldDepartment">---</div>
+                    </div>
+                    <div class="info-data-row">
+                        <div class="info-data-label">Registered Date</div>
+                        <div class="info-data-value" id="fieldJoinedDate">---</div>
+                    </div>
+                </div>
+
+                <button class="btn-action-footer">Edit Profile</button>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            loadRegisteredAdminSession();
+            initThemeConfiguration();
+        });
+
+        // Updated Logout function
+        function handleLogout() {
+            if (confirm("Are you sure you want to log out?")) {
+                // Clear only the keys related to your app to avoid clearing other site data
+                for (let i = localStorage.length - 1; i >= 0; i--) {
+                    const key = localStorage.key(i);
+                    if (key.startsWith('as_group_admin_')) {
+                        localStorage.removeItem(key);
+                    }
+                }
+                // Redirect to login page
+                window.location.href = 'login.html'; 
+            }
+        }
+
+        // Theme Switcher Initialization 
+        function initThemeConfiguration() {
+            const toggleBtn = document.getElementById('darkModeToggle');
+            const themeIcon = document.getElementById('themeIcon');
+            
+            if (localStorage.getItem('admin-theme') === 'dark') {
+                document.body.classList.add('dark-mode');
+                themeIcon.classList.replace('bi-moon-stars', 'bi-sun');
+            }
+
+            toggleBtn.addEventListener('click', () => {
+                document.body.classList.toggle('dark-mode');
+                if (document.body.classList.contains('dark-mode')) {
+                    themeIcon.classList.replace('bi-moon-stars', 'bi-sun');
+                    localStorage.setItem('admin-theme', 'dark');
+                } else {
+                    themeIcon.classList.replace('bi-sun', 'bi-moon-stars');
+                    localStorage.setItem('admin-theme', 'light');
+                }
+            });
+        }
+
+        function loadRegisteredAdminSession() {
+            let contextAdminEmail = "";
+            
+            for (let i = 0; i < localStorage.length; i++) {
+                const storageKey = localStorage.key(i);
+                if (storageKey.startsWith('as_group_admin_key_')) {
+                    contextAdminEmail = storageKey.replace('as_group_admin_key_', '');
+                    break;
+                }
+            }
+
+            if (!contextAdminEmail) {
+                document.getElementById('dynamicPanelGreeting').innerText = "Welcome back, Admin Workspace";
+                return;
+            }
+
+            const registeredName = localStorage.getItem(`as_group_admin_name_${contextAdminEmail}`) || "Administrator";
+            const registeredPhone = localStorage.getItem(`as_group_admin_phone_${contextAdminEmail}`) || "Not Provided";
+            const registeredRole = localStorage.getItem(`as_group_admin_role_${contextAdminEmail}`) || "Workspace Access Admin";
+            const registeredDept = localStorage.getItem(`as_group_admin_dept_${contextAdminEmail}`) || "Unassigned Division";
+            const registrationDate = localStorage.getItem(`as_group_admin_joined_${contextAdminEmail}`) || "New Account";
+
+            const avatarInitial = registeredName.trim().charAt(0).toUpperCase();
+
+            document.getElementById('dynamicPanelGreeting').innerText = `Welcome back, ${registeredName}`;
+            
+            document.getElementById('profileInitialsBox').innerText = avatarInitial;
+            document.getElementById('profileDisplayName').innerText = registeredName;
+            document.getElementById('profileDisplayEmail').innerText = contextAdminEmail;
+            document.getElementById('profileDisplayBadge').innerText = registeredRole;
+
+            document.getElementById('fieldFullName').innerText = registeredName;
+            document.getElementById('fieldEmail').innerText = contextAdminEmail;
+            document.getElementById('fieldRole').innerText = registeredRole;
+            document.getElementById('fieldPhone').innerText = registeredPhone;
+            document.getElementById('fieldDepartment').innerText = registeredDept;
+            document.getElementById('fieldJoinedDate').innerText = registrationDate;
+        }
+
+        function navigateToPanel(targetPanelId) {
+            document.querySelectorAll('.dashboard-panel-view').forEach(panel => {
+                panel.classList.remove('active-view');
+            });
+            document.querySelectorAll('.nav-menu-item').forEach(menuBtn => {
+                menuBtn.classList.remove('active');
+            });
+
+            if (targetPanelId === 'overview') {
+                document.getElementById('panelOverview').classList.add('active-view');
+                document.getElementById('menuOverview').classList.add('active');
+                document.getElementById('dynamicPanelTitle').innerText = "Overview";
+            } else if (targetPanelId === 'profile') {
+                document.getElementById('panelProfile').classList.add('active-view');
+                document.getElementById('menuProfile').classList.add('active');
+                document.getElementById('dynamicPanelTitle').innerText = "Profile";
+            }
+        }
+    </script>
+</body>
+</html>
