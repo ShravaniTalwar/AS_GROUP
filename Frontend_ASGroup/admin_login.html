@@ -236,8 +236,8 @@
                 </form>
 
                 <div class="register-text" id="toggleContext">
-                    Need new management access? <a href="#" onclick="toggleMode(event, 'register')">Register Admin</a>
-                </div>
+    Need new management access? <a href="admin_signup.html">Register Admin</a>
+</div>
             </div>
         </div>
     </div>
@@ -326,7 +326,7 @@
                     showStatus("Admin authorization granted! Routing to console panel...", true);
                     
                     setTimeout(() => {
-                        window.location.href = "index.html"; 
+                        window.location.href = "admin_dashboard.html"; 
                     }, 1200);
                 } else {
                     showStatus("Security verification failed. Invalid administrative key.", false);
